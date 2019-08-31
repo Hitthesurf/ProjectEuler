@@ -47,6 +47,14 @@ class TestCoinSum(unittest.TestCase):
         actual = num_perm.current_perm
         self.assertEqual([1,1,1,1,1,1], actual)
         
+    def test_max_number_makes_biggest_numbers(self):
+        num_perm = coin_sum.number_permutations()
+        num_perm.only_numbers = [1,2,3,4,5,6]
+        num_perm.current_num = 6
+        num_perm.max_number()
+        actual = num_perm.max_number()
+        self.assertEqual([1,1,1,1,1,1], actual)
+        
     def test_check_num_calculates_true_when_sum_of_elements_is_correct_number(self):
         num_perm = coin_sum.number_permutations()       
         num_perm.current_num = 6
@@ -100,6 +108,35 @@ class TestCoinSum(unittest.TestCase):
         expected.append([0, 1, 1, 2])
         expected.append([1, 1, 1, 1])      
         self.assertEqual(expected, actual)
+        
+    def test_combine_outputs_correct_array(self):
+        num_perm = coin_sum
+        actual = num_perm.combine([[1,2],[2,2]],[[2,4],[1,4]])
+        expected = [[1,2,2,4],[1,1,2,4],[2,2,2,4]]
+        self.assertEqual(expected, actual)
+        
+    def test_delete_duplicates_deletes_all_duplicates(self):
+        num_perm = coin_sum
+        test_data = [[3,2],[4,1],[4,1],[3,2]]
+        actual = num_perm.delete_duplicates(test_data)
+        expected = [[3,2], [4,1]]
+        self.assertEqual(expected, actual)
+        
+    def test_inc_combine_includes_last_number(self):
+        num_perm = coin_sum.number_permutations()
+        num_perm.only_numbers = [0,1,2,5,10,20,50,100,200]
+        actual = num_perm.inc_combine([[1]],[[1]])
+        expected = [[1,1],[0,2]]
+        self.assertEqual(expected, actual)
+        
+    def test_inc_combine_does_not_include_last_number_when_not_in_array(self):
+        num_perm = coin_sum.number_permutations()
+        num_perm.only_numbers = [0,1,2,5,10,20,50,100,200]
+        test_data = [[0, 2], [1, 1]]
+        actual = num_perm.inc_combine(test_data,test_data)
+        expected = [[0, 0, 2, 2], [0, 1, 1, 2], [1, 1, 1, 1]]
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
